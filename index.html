@@ -1307,12 +1307,28 @@ function buildCard(q) {
     inputHTML = `<textarea class="essay-area" id="essay_${q.id}" placeholder="Tulis jawabanmu di sini...">${state.text || ''}</textarea>`;
   }
 
+  const isPG = q.type === 'PG' || q.type === 'PG-Kompleks';
+  // For PG: explanation auto-shows after answered. For others: toggle button remains.
+  const autoShowExp = isPG && state.checked;
   const feedbackHTML = state.checked ? `<div class="feedback ${state.correct ? 'correct' : 'wrong'}">${state.correct ? '✅ Jawaban Benar! +1 poin' : '❌ Jawaban Kurang Tepat. Pelajari penjelasannya!'}</div>` : '';
-  const explanationHTML = `<div class="explanation ${state.showExp ? 'show' : ''}" id="exp_${q.id}">${q.explanation}</div>`;
+  const explanationHTML = `<div class="explanation ${(autoShowExp || state.showExp) ? 'show' : ''}" id="exp_${q.id}">${q.explanation}</div>`;
 
   const btnCheck = `<button class="btn-check" onclick="checkAnswer(${q.id})">✓ Periksa Jawaban</button>`;
-  const btnShow = `<button class="btn-show" onclick="toggleExp(${q.id})">💡 Tampilkan Jawaban & Penjelasan</button>`;
+  const btnShow = `<button class="btn-show" onclick="toggleExp(${q.id})">💡 ${state.showExp ? 'Sembunyikan' : 'Tampilkan'} Penjelasan</button>`;
   const btnReset = `<button class="btn-reset" onclick="resetQ(${q.id})">↺ Reset</button>`;
+
+  // PG: no check button (auto-checked on click), show reset only after answered
+  // Matching: keep check button
+  // Essay/Uraian: show toggle + reset
+  let buttons = '';
+  if (isPG) {
+    buttons = state.checked ? `${btnReset}` : '';
+  } else if (q.type === 'Menjodohkan') {
+    buttons = !state.checked ? btnCheck : '';
+    buttons += ` ${btnShow} ${btnReset}`;
+  } else {
+    buttons = `${btnShow} ${btnReset}`;
+  }
 
   return `
     <div class="q-card" id="card_${q.id}">
@@ -1324,13 +1340,9 @@ function buildCard(q) {
       </div>
       <div class="q-text">${q.question}</div>
       ${inputHTML}
-      <div class="btn-row" style="margin-top:12px">
-        ${q.type !== 'Essay' && q.type !== 'Uraian' ? btnCheck : ''}
-        ${btnShow}
-        ${btnReset}
-      </div>
       ${feedbackHTML}
       ${explanationHTML}
+      ${buttons ? `<div class="btn-row" style="margin-top:12px">${buttons}</div>` : ''}
     </div>
   `;
 }
@@ -1379,10 +1391,14 @@ function selectOpt(qid, idx) {
   if (!answered[qid]) answered[qid] = {};
   if (answered[qid].checked) return;
   answered[qid].selected = idx;
-  const card = document.getElementById(`card_${qid}`);
-  card.querySelectorAll('.opt').forEach((el, i) => {
-    el.className = 'opt' + (i === idx ? ' selected' : '');
-  });
+  // Auto-check immediately
+  answered[qid].checked = true;
+  answered[qid].showExp = true;
+  const correct = idx === q.answer;
+  answered[qid].correct = correct;
+  if (correct) score++;
+  refreshCard(qid);
+  updateProgress();
 }
 
 function checkAnswer(qid) {
