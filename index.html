@@ -1,49 +1,1522 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman Pertama</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-        }
-        .container {
-            text-align: center;
-            background-color: white;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #333;
-            margin-bottom: 30px;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ocean English — Belajar Bahasa Inggris</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --deep: #020f1c;
+  --navy: #041e36;
+  --ocean: #0a3558;
+  --mid: #0e5c8a;
+  --wave: #1a8cbb;
+  --foam: #4dc4e8;
+  --sky: #a8e4f7;
+  --white: #f0faff;
+  --gold: #f0c84a;
+  --coral: #ff6b6b;
+  --green: #43d99e;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--deep);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* === OCEAN BACKGROUND === */
+.ocean-bg {
+  position: fixed; inset: 0; z-index: 0;
+  background: linear-gradient(180deg, #020d1a 0%, #041e36 40%, #0a3558 70%, #0e5c8a 100%);
+  overflow: hidden;
+}
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(77,196,232,0.06);
+  border: 1px solid rgba(77,196,232,0.12);
+  animation: float linear infinite;
+}
+@keyframes float {
+  0% { transform: translateY(100vh) scale(0.5); opacity:0; }
+  10% { opacity:1; }
+  90% { opacity:0.6; }
+  100% { transform: translateY(-20vh) scale(1.2); opacity:0; }
+}
+.wave-line {
+  position: absolute;
+  width: 200%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(77,196,232,0.3), transparent);
+  animation: wave-move linear infinite;
+}
+@keyframes wave-move {
+  0% { transform: translateX(-50%) scaleY(1); }
+  50% { transform: translateX(0%) scaleY(2); }
+  100% { transform: translateX(-50%) scaleY(1); }
+}
+
+/* === LAYOUT === */
+.container {
+  position: relative; z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+
+/* === HEADER === */
+header {
+  text-align: center;
+  padding: 60px 0 40px;
+}
+.header-badge {
+  display: inline-block;
+  background: rgba(77,196,232,0.15);
+  border: 1px solid rgba(77,196,232,0.4);
+  border-radius: 30px;
+  padding: 6px 18px;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--foam);
+  margin-bottom: 20px;
+}
+header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--white) 0%, var(--foam) 50%, var(--sky) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+header p {
+  color: rgba(168,228,247,0.7);
+  font-size: 1rem;
+  font-weight: 300;
+  max-width: 500px;
+  margin: 0 auto 30px;
+}
+
+/* === PROGRESS BAR === */
+.progress-wrap {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(77,196,232,0.2);
+  border-radius: 20px;
+  padding: 16px 24px;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.progress-text { font-size: 13px; color: var(--foam); white-space: nowrap; }
+.progress-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--wave), var(--foam));
+  border-radius: 6px;
+  transition: width 0.5s ease;
+  width: 0%;
+}
+.score-badge {
+  background: rgba(240,200,74,0.15);
+  border: 1px solid rgba(240,200,74,0.4);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 13px;
+  color: var(--gold);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* === TOPIC TABS === */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 30px;
+  justify-content: center;
+}
+.tab {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(77,196,232,0.2);
+  border-radius: 20px;
+  padding: 7px 16px;
+  font-size: 12px;
+  color: rgba(168,228,247,0.7);
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+}
+.tab:hover, .tab.active {
+  background: rgba(77,196,232,0.2);
+  border-color: var(--foam);
+  color: var(--white);
+}
+
+/* === QUESTION CARD === */
+.q-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(77,196,232,0.18);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 24px;
+  transition: border-color 0.3s, transform 0.3s;
+  animation: fadeIn 0.5s ease;
+}
+.q-card:hover { border-color: rgba(77,196,232,0.4); }
+@keyframes fadeIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+
+.q-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.q-num {
+  background: linear-gradient(135deg, var(--wave), var(--foam));
+  color: var(--deep);
+  font-weight: 700;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+.q-exam {
+  background: rgba(240,200,74,0.15);
+  border: 1px solid rgba(240,200,74,0.3);
+  color: var(--gold);
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+.q-topic {
+  background: rgba(67,217,158,0.1);
+  border: 1px solid rgba(67,217,158,0.3);
+  color: var(--green);
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.q-type {
+  background: rgba(255,107,107,0.1);
+  border: 1px solid rgba(255,107,107,0.3);
+  color: var(--coral);
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.q-text {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.6;
+  color: var(--white);
+  margin-bottom: 20px;
+}
+.q-context {
+  background: rgba(77,196,232,0.06);
+  border-left: 3px solid var(--foam);
+  border-radius: 0 10px 10px 0;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+  color: var(--sky);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* === OPTIONS === */
+.options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+.opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1.5px solid rgba(77,196,232,0.15);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.25s;
+  font-size: 0.92rem;
+  color: rgba(240,250,255,0.85);
+  line-height: 1.5;
+}
+.opt:hover:not(.disabled) {
+  background: rgba(77,196,232,0.12);
+  border-color: var(--foam);
+  color: var(--white);
+  transform: translateX(4px);
+}
+.opt.selected { border-color: var(--wave); background: rgba(14,92,138,0.4); }
+.opt.correct { border-color: var(--green); background: rgba(67,217,158,0.15); color: var(--white); }
+.opt.wrong { border-color: var(--coral); background: rgba(255,107,107,0.12); }
+.opt.disabled { cursor: default; }
+.opt-letter {
+  min-width: 26px; height: 26px;
+  background: rgba(77,196,232,0.15);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700;
+  color: var(--foam);
+  flex-shrink: 0;
+}
+.opt.correct .opt-letter { background: var(--green); color: var(--deep); }
+.opt.wrong .opt-letter { background: var(--coral); color: white; }
+
+/* === MULTI-SELECT === */
+.multi-hint {
+  font-size: 11px;
+  color: rgba(168,228,247,0.6);
+  margin-bottom: 10px;
+  font-style: italic;
+}
+.multi-opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 11px 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1.5px solid rgba(77,196,232,0.15);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.25s;
+  font-size: 0.92rem;
+  color: rgba(240,250,255,0.85);
+  margin-bottom: 8px;
+}
+.multi-opt:hover:not(.disabled) { background: rgba(77,196,232,0.12); border-color: var(--foam); }
+.multi-opt.checked { border-color: var(--wave); background: rgba(14,92,138,0.4); }
+.multi-opt.correct { border-color: var(--green); background: rgba(67,217,158,0.15); }
+.multi-opt.wrong { border-color: var(--coral); background: rgba(255,107,107,0.1); }
+.checkbox {
+  min-width: 20px; height: 20px;
+  border: 2px solid rgba(77,196,232,0.4);
+  border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.multi-opt.checked .checkbox { background: var(--wave); border-color: var(--wave); }
+.multi-opt.correct .checkbox { background: var(--green); border-color: var(--green); }
+
+/* === ESSAY === */
+.essay-area {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1.5px solid rgba(77,196,232,0.2);
+  border-radius: 12px;
+  padding: 14px;
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem;
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.6;
+  transition: border-color 0.3s;
+}
+.essay-area:focus { outline: none; border-color: var(--foam); }
+
+/* === MATCHING === */
+.match-container { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.match-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: center;
+}
+.match-left {
+  background: rgba(77,196,232,0.08);
+  border: 1px solid rgba(77,196,232,0.25);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.88rem;
+  color: var(--sky);
+}
+.match-right select {
+  width: 100%;
+  background: rgba(4,30,54,0.8);
+  border: 1.5px solid rgba(77,196,232,0.25);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color 0.3s;
+}
+.match-right select:focus { outline: none; border-color: var(--foam); }
+.match-right select.correct { border-color: var(--green); }
+.match-right select.wrong { border-color: var(--coral); }
+
+/* === BUTTONS === */
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn-check, .btn-show, .btn-reset {
+  border: none;
+  border-radius: 30px;
+  padding: 10px 22px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.3s;
+  letter-spacing: 0.5px;
+}
+.btn-check {
+  background: linear-gradient(135deg, var(--wave), var(--foam));
+  color: var(--deep);
+}
+.btn-check:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,140,187,0.4); }
+.btn-show {
+  background: transparent;
+  border: 1.5px solid rgba(240,200,74,0.4);
+  color: var(--gold);
+}
+.btn-show:hover { background: rgba(240,200,74,0.1); }
+.btn-reset {
+  background: transparent;
+  border: 1.5px solid rgba(255,107,107,0.3);
+  color: var(--coral);
+}
+.btn-reset:hover { background: rgba(255,107,107,0.1); }
+
+/* === EXPLANATION BOX === */
+.explanation {
+  display: none;
+  background: rgba(240,200,74,0.06);
+  border: 1px solid rgba(240,200,74,0.25);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-top: 16px;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: rgba(240,250,255,0.9);
+  animation: fadeIn 0.4s ease;
+}
+.explanation.show { display: block; }
+.explanation strong { color: var(--gold); }
+.explanation h4 {
+  color: var(--gold);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.explanation h4::before {
+  content: '💡';
+  font-size: 1rem;
+}
+.explanation .vocab {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(240,200,74,0.15);
+}
+.vocab-item {
+  display: inline-block;
+  background: rgba(77,196,232,0.1);
+  border: 1px solid rgba(77,196,232,0.2);
+  border-radius: 6px;
+  padding: 3px 10px;
+  margin: 3px;
+  font-size: 0.82rem;
+  color: var(--foam);
+}
+
+/* === FEEDBACK === */
+.feedback {
+  display: none;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 20px;
+  margin-top: 12px;
+  text-align: center;
+}
+.feedback.correct { display: block; background: rgba(67,217,158,0.15); color: var(--green); border: 1px solid rgba(67,217,158,0.3); }
+.feedback.wrong { display: block; background: rgba(255,107,107,0.12); color: var(--coral); border: 1px solid rgba(255,107,107,0.3); }
+
+/* === SECTION HEADER === */
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 40px 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(77,196,232,0.15);
+}
+.section-icon {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--wave), var(--foam));
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.section-head h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  color: var(--foam);
+}
+.section-head span {
+  font-size: 12px;
+  color: rgba(168,228,247,0.5);
+  margin-left: auto;
+}
+
+/* === SUMMARY === */
+.summary-card {
+  background: linear-gradient(135deg, rgba(14,92,138,0.4), rgba(10,53,88,0.6));
+  border: 1px solid rgba(77,196,232,0.3);
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  margin-top: 40px;
+}
+.summary-card h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--foam); margin-bottom: 10px; }
+.summary-score { font-size: 3.5rem; font-weight: 900; color: var(--gold); font-family: 'Playfair Display', serif; }
+.summary-label { color: rgba(168,228,247,0.6); font-size: 0.9rem; margin-bottom: 20px; }
+.btn-restart {
+  background: linear-gradient(135deg, var(--wave), var(--foam));
+  color: var(--deep);
+  border: none;
+  border-radius: 30px;
+  padding: 14px 36px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.3s;
+}
+.btn-restart:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(26,140,187,0.5); }
+
+/* === FISH DECORATION === */
+.fish {
+  position: fixed;
+  font-size: 24px;
+  animation: swim linear infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+@keyframes swim {
+  0% { transform: translateX(-80px); }
+  100% { transform: translateX(calc(100vw + 80px)); }
+}
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--deep); }
+::-webkit-scrollbar-thumb { background: var(--ocean); border-radius: 3px; }
+
+/* === FILTER === */
+.hidden { display: none; }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>Hai</h1>
-        <button onclick="location.href='Bahasa Inggris.html'">Selanjutnya</button>
+
+<!-- Ocean Background -->
+<div class="ocean-bg" id="oceanBg"></div>
+
+<div class="container">
+
+  <header>
+    <div class="header-badge">🌊 Ocean English Learning</div>
+    <h1>Belajar Bahasa Inggris</h1>
+    <p>Latihan soal interaktif sesuai kisi-kisi ujian. Kerjakan soal, lalu tampilkan penjelasan untuk belajar lebih dalam!</p>
+  </header>
+
+  <!-- Progress -->
+  <div class="progress-wrap">
+    <span class="progress-text">Progress: <span id="doneCount">0</span>/<span id="totalCount">0</span> soal</span>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="score-badge">⭐ Skor: <span id="scoreVal">0</span></div>
+  </div>
+
+  <!-- Topic Filter -->
+  <div class="tabs">
+    <button class="tab active" onclick="filterTopic('all')">Semua Topik</button>
+    <button class="tab" onclick="filterTopic('intro')">Introducing</button>
+    <button class="tab" onclick="filterTopic('greet')">Greetings</button>
+    <button class="tab" onclick="filterTopic('procedure')">Procedure Text</button>
+    <button class="tab" onclick="filterTopic('narrative')">Narrative Text</button>
+    <button class="tab" onclick="filterTopic('hortatory')">Hortatory</button>
+    <button class="tab" onclick="filterTopic('cv')">CV</button>
+    <button class="tab" onclick="filterTopic('letter')">Job Application</button>
+  </div>
+
+  <!-- Questions will be injected here by JS -->
+  <div id="questionsArea"></div>
+
+  <!-- Summary -->
+  <div class="summary-card" id="summaryCard" style="display:none">
+    <h2>🏆 Selesai!</h2>
+    <div class="summary-score" id="finalScore">0</div>
+    <div class="summary-label">poin dari total jawaban benar</div>
+    <p style="color:rgba(168,228,247,0.7); margin-bottom:20px; font-size:0.9rem" id="finalMsg"></p>
+    <button class="btn-restart" onclick="restartAll()">🔄 Mulai Ulang</button>
+  </div>
+
+</div>
+
+<script>
+// ======================= DATA =======================
+const questions = [
+
+// ===== SECTION: INTRODUCING =====
+{
+  id: 1, topic: 'intro', type: 'PG',
+  examNums: [1, 14],
+  topicLabel: 'Introducing Oneself',
+  question: 'Muzaki wants to introduce himself formally in front of the class at SMKS Insan Mandiri. Which expression is BEST for him to use?',
+  options: [
+    'Hey guys! I\'m Muzaki, nice to meet ya!',
+    'Allow me to introduce myself. My name is Muzaki Setiawan, and I am a student of Teknik Jaringan Komputer dan Telekomunikasi.',
+    'You can just call me Muzaki.',
+    'Muzaki is my name, okay?'
+  ],
+  answer: 1,
+  explanation: `<strong>Introducing Oneself (No. Soal Ujian: 1, 14)</strong><br><br>
+Untuk memperkenalkan diri secara formal, gunakan struktur:<br>
+• "Allow me to introduce myself. My name is ___."<br>
+• "Good morning/afternoon, I'd like to introduce myself. I am ___."<br>
+• "Let me introduce myself. My name is ___, and I study at ___."<br><br>
+Ekspresi informal seperti "Hey guys! I'm Muzaki" hanya cocok untuk situasi santai.<br><br>
+<strong>Contoh perkenalan formal lengkap Muzaki:</strong><br>
+"Good morning. Allow me to introduce myself. My name is Muzaki Setiawan. I was born in Bandung on October 29, 2007. I live at Jl. Sariwangi. I am a student of SMKS Insan Mandiri, majoring in Teknik Jaringan Komputer dan Telekomunikasi."<br><br>
+<div class="vocab">
+<span class="vocab-item">Allow me to introduce</span>
+<span class="vocab-item">Let me introduce myself</span>
+<span class="vocab-item">My name is / I am</span>
+<span class="vocab-item">I was born in Bandung</span>
+<span class="vocab-item">I am a student of ___</span>
+</div>`
+},
+{
+  id: 2, topic: 'intro', type: 'PG',
+  examNums: [1, 14],
+  topicLabel: 'Introducing Oneself',
+  question: 'Ayu says: "Hi everyone, I\'d like to tell you a little about myself. I was born in Bandung on May 20, 2007, and I currently study at SMKS Insan Mandiri." What is Ayu doing?',
+  options: [
+    'Giving a speech about Bandung',
+    'Introducing herself',
+    'Asking for information',
+    'Saying goodbye'
+  ],
+  answer: 1,
+  explanation: `<strong>Introducing Oneself — Konteks (No. Soal Ujian: 1, 14)</strong><br><br>
+Ketika seseorang berkata "I'd like to tell you a little about myself" diikuti dengan informasi pribadi (tempat lahir, tanggal lahir, sekolah, dll), itu adalah teks <strong>perkenalan diri (self-introduction)</strong>.<br><br>
+<strong>Biodata Ayu Wina Widiana:</strong><br>
+• Nama: Ayu Wina Widiana<br>
+• Lahir: Bandung, 20 Mei 2007<br>
+• Sekolah: SMKS Insan Mandiri<br>
+• Jurusan: Teknik Jaringan Komputer dan Telekomunikasi<br>
+• Alamat: Jl. Ciwaruga<br><br>
+<div class="vocab">
+<span class="vocab-item">I'd like to tell you about myself</span>
+<span class="vocab-item">I was born in Bandung on ___</span>
+<span class="vocab-item">I currently study at ___</span>
+<span class="vocab-item">I major in ___</span>
+</div>`
+},
+
+{
+  id: 3, topic: 'intro', type: 'PG',
+  examNums: [2, 25],
+  topicLabel: 'Introducing Others',
+  question: 'Muzaki says to his teacher: "Sir, I\'d like you to meet my classmate, Ayu Wina Widiana. She also lives in Bandung and studies in the same major as me." What is Muzaki doing?',
+  options: [
+    'Introducing himself',
+    'Greeting his teacher',
+    'Introducing someone else',
+    'Asking about Ayu'
+  ],
+  answer: 2,
+  explanation: `<strong>Introducing Others (No. Soal Ujian: 2, 25)</strong><br><br>
+Muzaki memperkenalkan orang lain (<em>introducing others</em>) — yaitu Ayu Wina Widiana — kepada gurunya.<br><br>
+Frasa yang digunakan:<br>
+• "I'd like you to meet ___." ← digunakan Muzaki<br>
+• "This is my friend, ___."<br>
+• "Allow me to introduce you to ___."<br>
+• "Have you met ___? She is ___."<br><br>
+Bedanya dengan <em>introducing oneself</em>: subjeknya adalah <strong>orang ketiga</strong> (she = Ayu), bukan "I".<br><br>
+<div class="vocab">
+<span class="vocab-item">I'd like you to meet</span>
+<span class="vocab-item">This is my classmate</span>
+<span class="vocab-item">She lives in Bandung</span>
+<span class="vocab-item">She studies in the same major</span>
+</div>`
+},
+
+{
+  id: 4, topic: 'intro', type: 'PG',
+  examNums: [2, 25],
+  topicLabel: 'Introducing Others',
+  question: 'Which sentence correctly introduces Ayu Wina Widiana to someone else?',
+  options: [
+    'I am Ayu and I was born in Bandung on May 20, 2007.',
+    'Let me introduce myself. I\'m a student at SMKS Insan Mandiri.',
+    'I\'d like to introduce my friend, Ayu Wina Widiana. She is a student at SMKS Insan Mandiri, majoring in Teknik Jaringan Komputer dan Telekomunikasi.',
+    'Nice to meet you! I\'m so happy to be here.'
+  ],
+  answer: 2,
+  explanation: `<strong>Introducing Others — Identifikasi Ekspresi (No. Soal Ujian: 2, 25)</strong><br><br>
+Kunci identifikasi: dalam <em>introducing others</em>, kamu menyebutkan <strong>nama orang lain</strong> (Ayu Wina Widiana) dan memberikan informasi tentang mereka, bukan tentang dirimu sendiri.<br><br>
+"I'd like to introduce my friend, Ayu Wina Widiana" → memperkenalkan orang lain ✅<br>
+"Let me introduce myself" → memperkenalkan diri sendiri ❌<br><br>
+<strong>Template lengkap memperkenalkan Ayu:</strong><br>
+"This is Ayu Wina Widiana. She was born in Bandung on May 20, 2007. She lives at Jl. Ciwaruga and studies at SMKS Insan Mandiri."<br><br>
+<div class="vocab">
+<span class="vocab-item">my friend / my classmate</span>
+<span class="vocab-item">She was born in ___</span>
+<span class="vocab-item">She lives at ___</span>
+<span class="vocab-item">She majors in ___</span>
+</div>`
+},
+
+// ===== SECTION: GREETINGS =====
+{
+  id: 5, topic: 'greet', type: 'PG',
+  examNums: [4, 17],
+  topicLabel: 'Greetings',
+  question: 'Muzaki meets the head of BPMJP Kementerian Perdagangan (his PKL supervisor) in the morning. What is the MOST appropriate greeting?',
+  options: [
+    'Hey! What\'s up, sir?',
+    'Yo, good morning!',
+    'Good morning, sir. How are you today?',
+    'Morning! Slept well?'
+  ],
+  answer: 2,
+  explanation: `<strong>Greetings Formal (No. Soal Ujian: 4, 17)</strong><br><br>
+Dalam konteks formal (kepada atasan/supervisor PKL, guru, tamu resmi), gunakan sapaan formal:<br>
+• "Good morning/afternoon/evening, ___." + gelar/nama<br>
+• "How are you today?" / "How do you do?"<br>
+• "It's a pleasure to see you."<br><br>
+Saat Muzaki PKL di BPMJP Kementerian Perdagangan sebagai Editor Desain Grafis, ia harus menggunakan bahasa formal kepada atasannya.<br><br>
+<strong>Hindari</strong> ekspresi informal seperti "Hey!", "Yo!", "What's up?" dalam situasi formal.<br><br>
+<strong>Waktu sapaan:</strong><br>
+• Good morning → sebelum jam 12 siang<br>
+• Good afternoon → jam 12–18<br>
+• Good evening → setelah jam 18<br><br>
+<div class="vocab">
+<span class="vocab-item">Good morning/afternoon/evening</span>
+<span class="vocab-item">How are you today?</span>
+<span class="vocab-item">How do you do?</span>
+<span class="vocab-item">It's a pleasure</span>
+</div>`
+},
+{
+  id: 6, topic: 'greet', type: 'PG',
+  examNums: [4, 17],
+  topicLabel: 'Greetings — Response',
+  question: 'Ayu\'s supervisor at BBPPMPV BMTI says: "Good afternoon, how are you?" The BEST response from Ayu is:',
+  options: [
+    'Good morning too, ma\'am!',
+    'I\'m fine, thank you. And you, ma\'am?',
+    'See you later!',
+    'My name is Ayu Wina Widiana.'
+  ],
+  answer: 1,
+  explanation: `<strong>Respons Greeting (No. Soal Ujian: 4, 17)</strong><br><br>
+Saat supervisor Ayu di BBPPMPV BMTI menyapa dan menanyakan kabar, respons yang tepat harus:<br>
+1. Menjawab kabar (I'm fine / I'm good / Pretty well)<br>
+2. Mengucapkan terima kasih (thank you / thanks)<br>
+3. Balik bertanya (And you? / How about you?)<br><br>
+"Good morning too!" salah karena waktu sudah siang (afternoon).<br>
+"See you later!" adalah ungkapan perpisahan, bukan respons greeting.<br><br>
+<strong>Konteks:</strong> Ayu PKL di BBPPMPV BMTI dengan tugas konfigurasi server — lingkungan profesional memerlukan bahasa formal.<br><br>
+<div class="vocab">
+<span class="vocab-item">I'm fine, thank you.</span>
+<span class="vocab-item">I'm doing well, thanks.</span>
+<span class="vocab-item">Pretty good, and you?</span>
+<span class="vocab-item">Not bad, how about you?</span>
+</div>`
+},
+
+// ===== SECTION: LEAVE-TAKING =====
+{
+  id: 7, topic: 'greet', type: 'PG',
+  examNums: [3, 23],
+  topicLabel: 'Leave-Taking',
+  question: 'Which expression is used for FORMAL leave-taking?',
+  options: [
+    'Bye-bye! See ya!',
+    'Later, dude!',
+    'It was a pleasure meeting you. Have a good day.',
+    'Gotta go, ciao!'
+  ],
+  answer: 2,
+  explanation: `<strong>Leave-Taking (No. Soal Ujian: 3, 23)</strong><br><br>
+Ungkapan perpisahan formal vs informal:<br><br>
+<strong>Formal:</strong><br>
+• "It was a pleasure meeting you."<br>
+• "Have a good day/evening."<br>
+• "Goodbye, sir/ma'am."<br>
+• "I look forward to seeing you again."<br><br>
+<strong>Informal:</strong><br>
+• "Bye! See ya!"<br>
+• "Later!" / "Gotta go!"<br>
+• "Ciao!" / "Take care!"<br><br>
+<div class="vocab">
+<span class="vocab-item">It was a pleasure</span>
+<span class="vocab-item">Have a good day</span>
+<span class="vocab-item">Goodbye</span>
+<span class="vocab-item">I look forward to seeing you</span>
+</div>`
+},
+{
+  id: 8, topic: 'greet', type: 'PG',
+  examNums: [3, 23],
+  topicLabel: 'Leave-Taking',
+  question: 'On the last day of his PKL at BPMJP Kementerian Perdagangan, Muzaki says: "Thank you for this wonderful internship experience. I have learned so much. Goodbye, sir." This is an example of:',
+  options: [
+    'Informal leave-taking',
+    'Formal leave-taking',
+    'Greeting someone',
+    'Introducing oneself'
+  ],
+  answer: 1,
+  explanation: `<strong>Leave-Taking dalam Konteks PKL (No. Soal Ujian: 3, 23)</strong><br><br>
+Saat Muzaki menyelesaikan PKL di BPMJP Kementerian Perdagangan sebagai Editor Desain Grafis, ia menggunakan perpisahan formal karena:<br>
+✅ "Thank you for this wonderful internship experience" → mengucapkan terima kasih secara resmi<br>
+✅ "I have learned so much" → menyampaikan apresiasi<br>
+✅ "Goodbye, sir" → menggunakan "Goodbye" (bukan "Bye" atau "See ya")<br><br>
+Konteks PKL/profesional selalu menggunakan bahasa formal.<br><br>
+<div class="vocab">
+<span class="vocab-item">Thank you for this experience</span>
+<span class="vocab-item">I have learned so much</span>
+<span class="vocab-item">It was a great opportunity</span>
+<span class="vocab-item">Goodbye / Farewell</span>
+</div>`
+},
+
+// ===== SECTION: PROCEDURE TEXT =====
+{
+  id: 9, topic: 'procedure', type: 'PG',
+  examNums: [5],
+  topicLabel: 'Procedure Text — Tujuan',
+  question: 'What is the MAIN PURPOSE of a procedure text?',
+  options: [
+    'To entertain the reader with a story',
+    'To describe how something looks',
+    'To tell how to do or make something step by step',
+    'To persuade the reader to agree with an opinion'
+  ],
+  answer: 2,
+  explanation: `<strong>Tujuan Procedure Text (No. Soal Ujian: 5)</strong><br><br>
+<strong>Procedure text</strong> bertujuan untuk memberikan instruksi atau langkah-langkah cara melakukan/membuat sesuatu (<em>to tell how to do or make something</em>).<br><br>
+<strong>Ciri-ciri procedure text:</strong><br>
+• Menggunakan kalimat perintah (imperative): Add, Mix, Stir, Cut, Press<br>
+• Menggunakan kata urutan: First, Then, Next, After that, Finally<br>
+• Menggunakan simple present tense<br>
+• Biasanya ada daftar bahan/alat (materials/ingredients)<br><br>
+<strong>Contoh:</strong> resep masakan, petunjuk penggunaan alat, cara menginstal aplikasi<br><br>
+<div class="vocab">
+<span class="vocab-item">Instructions</span>
+<span class="vocab-item">Step by step</span>
+<span class="vocab-item">Imperative sentence</span>
+<span class="vocab-item">First, Then, Next, Finally</span>
+</div>`
+},
+{
+  id: 10, topic: 'procedure', type: 'PG-Kompleks',
+  examNums: [18],
+  topicLabel: 'Procedure Text — Urutan',
+  question: 'Read the steps below. Which is the CORRECT order for "How to Make a Cup of Tea"?',
+  options: [
+    '1. Pour hot water → 2. Add tea bag → 3. Boil water → 4. Add sugar → 5. Stir',
+    '1. Boil water → 2. Place tea bag in cup → 3. Pour hot water → 4. Wait 3 minutes → 5. Add sugar and stir',
+    '1. Add sugar → 2. Boil water → 3. Pour water → 4. Stir → 5. Add tea bag',
+    '1. Stir → 2. Boil water → 3. Pour water → 4. Add tea bag → 5. Add sugar'
+  ],
+  answer: 1,
+  explanation: `<strong>Urutan Langkah Procedure Text (No. Soal Ujian: 18)</strong><br><br>
+Urutan yang logis sangat penting dalam procedure text. Langkah harus <strong>berurutan dan masuk akal</strong>:<br><br>
+✅ Urutan benar:<br>
+1. <strong>Boil water</strong> (air harus direbus dulu)<br>
+2. <strong>Place tea bag in cup</strong> (siapkan cangkir)<br>
+3. <strong>Pour hot water</strong> (tuang air panas)<br>
+4. <strong>Wait 3 minutes</strong> (biarkan teh menyeduh)<br>
+5. <strong>Add sugar and stir</strong> (tambah gula, aduk)<br><br>
+❌ Tidak mungkin menuang air sebelum merebus, atau menambah teh bag setelah air dituang lalu menunggu.<br><br>
+<div class="vocab">
+<span class="vocab-item">Boil = merebus</span>
+<span class="vocab-item">Pour = menuang</span>
+<span class="vocab-item">Stir = mengaduk</span>
+<span class="vocab-item">Wait = menunggu</span>
+</div>`
+},
+{
+  id: 11, topic: 'procedure', type: 'PG',
+  examNums: [15, 29, 34],
+  topicLabel: 'Procedure Text — Struktur',
+  question: 'In a procedure text, which part lists the things you need before starting?',
+  options: [
+    'Goal (Tujuan)',
+    'Materials / Ingredients',
+    'Steps',
+    'Conclusion'
+  ],
+  answer: 1,
+  explanation: `<strong>Bagian-Bagian Procedure Text (No. Soal Ujian: 15, 29, 34)</strong><br><br>
+Procedure text memiliki 3 bagian utama:<br><br>
+1. <strong>Goal / Title</strong> → Menyatakan tujuan, apa yang akan dibuat/dilakukan<br>
+   Contoh: "How to Make Fried Rice"<br><br>
+2. <strong>Materials / Ingredients / Tools</strong> → Daftar bahan, alat, atau perlengkapan yang dibutuhkan<br>
+   Contoh: 2 cups of rice, 2 eggs, salt...<br><br>
+3. <strong>Steps / Methods</strong> → Langkah-langkah yang harus dilakukan secara berurutan<br>
+   Contoh: First, heat the oil. Then, add the rice...<br><br>
+<div class="vocab">
+<span class="vocab-item">Goal = tujuan</span>
+<span class="vocab-item">Materials = bahan/alat</span>
+<span class="vocab-item">Steps = langkah-langkah</span>
+</div>`
+},
+
+// ===== SECTION: NARRATIVE TEXT =====
+{
+  id: 12, topic: 'narrative', type: 'PG',
+  examNums: [6, 7],
+  topicLabel: 'Narrative Text — Generic Structure',
+  question: 'Read the paragraph: "Once upon a time, in the city of Bandung, there lived a diligent young man named Muzaki Setiawan. He was passionate about technology and dreamed of becoming a great network engineer." What part of narrative text is this?',
+  options: [
+    'Complication',
+    'Resolution',
+    'Orientation',
+    'Coda'
+  ],
+  answer: 2,
+  explanation: `<strong>Generic Structure Narrative Text (No. Soal Ujian: 6, 7)</strong><br><br>
+Paragraph tersebut memperkenalkan tokoh (Muzaki Setiawan), tempat (Bandung), dan waktu (once upon a time) → ini adalah bagian <strong>Orientation</strong>.<br><br>
+<strong>Generic Structure Narrative Text:</strong><br>
+1. <strong>Orientation</strong> → Pengenalan tokoh, tempat, waktu (who, where, when)<br>
+2. <strong>Complication</strong> → Masalah/konflik yang muncul<br>
+3. <strong>Resolution</strong> → Penyelesaian masalah<br>
+4. <strong>Coda (opsional)</strong> → Pesan moral / akhiran<br><br>
+<strong>Kata kunci orientation:</strong> once upon a time, long ago, there lived...<br><br>
+<div class="vocab">
+<span class="vocab-item">Once upon a time</span>
+<span class="vocab-item">There lived a ___</span>
+<span class="vocab-item">In the city of Bandung</span>
+<span class="vocab-item">He/She was passionate about ___</span>
+</div>`
+},
+{
+  id: 13, topic: 'narrative', type: 'PG',
+  examNums: [13],
+  topicLabel: 'Narrative Text — Past Tense',
+  question: 'Narrative text commonly uses past tense. Read this story about Ayu\'s internship. Which sentence is correctly written in simple past tense?',
+  options: [
+    'Ayu configures the server every day at BBPPMPV BMTI.',
+    'Ayu will learn about server configuration next year.',
+    'During her internship, Ayu configured several servers at BBPPMPV BMTI.',
+    'Ayu is currently learning server configuration.'
+  ],
+  answer: 2,
+  explanation: `<strong>Past Tense dalam Narrative Text (No. Soal Ujian: 13)</strong><br><br>
+Narrative text menggunakan <strong>Simple Past Tense</strong> karena menceritakan kejadian di masa lampau.<br><br>
+<strong>Rumus Simple Past Tense:</strong><br>
+• S + V2 (verb kedua / irregular verb)<br>
+• S + was/were + ...<br><br>
+Analisis pilihan:<br>
+❌ "configures" → present tense (kebiasaan saat ini)<br>
+❌ "will learn" → future tense<br>
+✅ "configured" → past tense dari "configure" ← BENAR (Ayu sudah PKL = masa lampau)<br>
+❌ "is currently learning" → present continuous<br><br>
+<strong>Konteks:</strong> Ayu Wina Widiana sudah menyelesaikan PKL di BBPPMPV BMTI dengan tugas konfigurasi server → cerita masa lampau.<br><br>
+<div class="vocab">
+<span class="vocab-item">configured = mengkonfigurasi (lampau)</span>
+<span class="vocab-item">learned → belajar (lampau)</span>
+<span class="vocab-item">worked → bekerja (lampau)</span>
+<span class="vocab-item">completed → menyelesaikan (lampau)</span>
+</div>`
+},
+{
+  id: 14, topic: 'narrative', type: 'PG-Kompleks',
+  examNums: [21],
+  topicLabel: 'Narrative Text — Complication',
+  question: 'Read this story about Muzaki\'s internship. Which paragraph shows the COMPLICATION?',
+  options: [
+    '"Muzaki Setiawan was a student at SMKS Insan Mandiri, majoring in Teknik Jaringan Komputer dan Telekomunikasi. He was excited to start his internship at BPMJP Kementerian Perdagangan as a Graphic Design Editor."',
+    '"One day, Muzaki was given a very important design project with a tight deadline. His computer suddenly crashed, and all his design files were lost. He had no backup and his supervisor was waiting for the results."',
+    '"Fortunately, Muzaki remembered that he had saved some files on his Google Drive. He worked overnight, recreated the designs, and submitted them just in time. His supervisor was impressed."',
+    '"The experience taught Muzaki that always backing up your work is essential in any professional setting."'
+  ],
+  answer: 1,
+  explanation: `<strong>Complication dalam Narrative Text (No. Soal Ujian: 21)</strong><br><br>
+<strong>Complication</strong> adalah bagian konflik atau masalah yang membuat cerita menjadi menarik dan tegang.<br><br>
+Analisis pilihan berdasarkan cerita PKL Muzaki di BPMJP Kementerian Perdagangan:<br>
+❌ Pilihan A → <strong>Orientation</strong> (memperkenalkan Muzaki dan setting PKL)<br>
+✅ Pilihan B → <strong>Complication</strong> ← deadline ketat + komputer crash + file hilang = masalah besar<br>
+❌ Pilihan C → <strong>Resolution</strong> (masalah diselesaikan dengan Google Drive)<br>
+❌ Pilihan D → <strong>Coda/Moral</strong> (pesan moral tentang backup data)<br><br>
+<strong>Ciri complication:</strong><br>
+• Muncul masalah/konflik ("One day...", "Suddenly...")<br>
+• Situasi menjadi sulit atau berbahaya<br><br>
+<div class="vocab">
+<span class="vocab-item">One day = suatu hari</span>
+<span class="vocab-item">Suddenly = tiba-tiba</span>
+<span class="vocab-item">Unfortunately = sayangnya</span>
+<span class="vocab-item">tight deadline = tenggat waktu ketat</span>
+</div>`
+},
+
+// ===== SECTION: HORTATORY EXPOSITION =====
+{
+  id: 15, topic: 'hortatory', type: 'PG',
+  examNums: [8, 16],
+  topicLabel: 'Hortatory Exposition — Tujuan',
+  question: 'What is the purpose of a hortatory exposition text?',
+  options: [
+    'To retell past events in chronological order',
+    'To persuade readers to do or not to do something',
+    'To explain how something works scientifically',
+    'To describe a person or place in detail'
+  ],
+  answer: 1,
+  explanation: `<strong>Tujuan Hortatory Exposition (No. Soal Ujian: 8, 16)</strong><br><br>
+<strong>Hortatory Exposition</strong> bertujuan untuk <em>mengajak/mendorong pembaca untuk melakukan atau tidak melakukan sesuatu</em> — mirip dengan ajakan beraksi (call to action).<br><br>
+<strong>Perbedaan dengan Analytical Exposition:</strong><br>
+• Analytical → memberi argumen, menyimpulkan pendapat (thesis)<br>
+• Hortatory → memberi argumen, lalu mengajak bertindak (<strong>recommendation</strong>)<br><br>
+<strong>Generic Structure Hortatory:</strong><br>
+1. <strong>Thesis</strong> → Pernyataan/posisi penulis<br>
+2. <strong>Arguments</strong> → Argumen pendukung<br>
+3. <strong>Recommendation</strong> → Ajakan/saran untuk bertindak<br><br>
+<div class="vocab">
+<span class="vocab-item">We should ___</span>
+<span class="vocab-item">It is important to ___</span>
+<span class="vocab-item">We must take action</span>
+<span class="vocab-item">Let us / Let's ___</span>
+</div>`
+},
+{
+  id: 16, topic: 'hortatory', type: 'PG-Kompleks',
+  examNums: [24],
+  topicLabel: 'Hortatory Exposition — Thesis',
+  question: 'Read this text: "Social media has become a significant part of teenagers\' lives. It can be used to connect with friends, access information, and express creativity. However, it also poses serious risks to mental health if not used wisely." What is the THESIS of this text?',
+  options: [
+    'Social media is only for teenagers.',
+    'Social media should be banned in schools.',
+    'Social media is beneficial but can be risky, therefore its use should be managed wisely.',
+    'Mental health problems are caused by social media only.'
+  ],
+  answer: 2,
+  explanation: `<strong>Thesis dalam Hortatory Exposition (No. Soal Ujian: 24)</strong><br><br>
+<strong>Thesis</strong> adalah pernyataan utama atau posisi penulis yang akan dikembangkan melalui argumen.<br><br>
+Pada teks tersebut:<br>
+• Social media punya manfaat (connect, access info, express creativity) ✅<br>
+• Tapi ada risiko (mental health) ✅<br>
+• Maka tesis = "sosial media bermanfaat tapi perlu digunakan dengan bijak"<br><br>
+<strong>Ciri Thesis:</strong><br>
+• Biasanya di paragraf pertama<br>
+• Menyatakan pendapat penulis secara umum<br>
+• Tidak terlalu spesifik, masih umum<br><br>
+<div class="vocab">
+<span class="vocab-item">Thesis = pernyataan posisi</span>
+<span class="vocab-item">however = namun</span>
+<span class="vocab-item">significant = penting/signifikan</span>
+<span class="vocab-item">poses risks = menimbulkan risiko</span>
+</div>`
+},
+{
+  id: 17, topic: 'hortatory', type: 'PG-Kompleks',
+  examNums: [20],
+  topicLabel: 'Hortatory Exposition — Argument',
+  question: 'Which sentence is an ARGUMENT in a hortatory exposition about reducing plastic use?',
+  options: [
+    'Plastic is made from petroleum.',
+    'We should immediately stop using plastic bags in supermarkets.',
+    'Plastic waste takes over 400 years to decompose and pollutes our oceans, harming marine life.',
+    'There are many types of plastic in the world.'
+  ],
+  answer: 2,
+  explanation: `<strong>Kalimat Argumen dalam Hortatory (No. Soal Ujian: 20)</strong><br><br>
+<strong>Argumen</strong> dalam hortatory exposition adalah alasan/bukti yang mendukung thesis, bukan sekadar fakta umum.<br><br>
+Analisis pilihan:<br>
+❌ A → Fakta biasa tentang plastik (bukan argumen pendukung)<br>
+❌ B → Ini adalah recommendation (ajakan bertindak)<br>
+✅ C → <strong>Argumen</strong> ← memberikan alasan spesifik mengapa plastik berbahaya (400 tahun, polusi laut)<br>
+❌ D → Hanya informasi umum<br><br>
+<strong>Ciri kalimat argumen yang kuat:</strong><br>
+• Mengandung data/statistik<br>
+• Memberikan dampak/konsekuensi yang jelas<br>
+• Relevan dengan thesis<br><br>
+<div class="vocab">
+<span class="vocab-item">decompose = terurai</span>
+<span class="vocab-item">pollutes = mencemari</span>
+<span class="vocab-item">marine life = kehidupan laut</span>
+<span class="vocab-item">Furthermore / Moreover = selain itu</span>
+</div>`
+},
+{
+  id: 18, topic: 'hortatory', type: 'PG',
+  examNums: [9],
+  topicLabel: 'Hortatory Exposition — Recommendation',
+  question: 'Which sentence is a RECOMMENDATION in a hortatory text?',
+  options: [
+    'Air pollution is increasing in major cities.',
+    'Studies show that vehicle emissions cause 60% of city pollution.',
+    'Therefore, we should use public transportation and reduce private vehicle usage.',
+    'Traffic jams cause people to be late for work.'
+  ],
+  answer: 2,
+  explanation: `<strong>Recommendation dalam Hortatory (No. Soal Ujian: 9)</strong><br><br>
+<strong>Recommendation</strong> adalah bagian penutup hortatory yang berisi ajakan/saran konkret untuk bertindak.<br><br>
+Identifikasi:<br>
+❌ A → Fakta/pernyataan umum<br>
+❌ B → Argumen (data statistik)<br>
+✅ C → <strong>Recommendation</strong> ← kata "Therefore, we should..." = ajakan bertindak<br>
+❌ D → Fakta tentang dampak<br><br>
+<strong>Kata kunci Recommendation:</strong><br>
+• "Therefore, we should..."<br>
+• "It is important that we..."<br>
+• "We must take action..."<br>
+• "Let us all..."<br>
+• "It is recommended that..."<br><br>
+<div class="vocab">
+<span class="vocab-item">Therefore = oleh karena itu</span>
+<span class="vocab-item">We should = kita harus</span>
+<span class="vocab-item">It is important that = penting bagi</span>
+<span class="vocab-item">Let us = mari kita</span>
+</div>`
+},
+
+// ===== SECTION: CV =====
+{
+  id: 19, topic: 'cv', type: 'PG',
+  examNums: [12, 22],
+  topicLabel: 'Curriculum Vitae (CV)',
+  question: 'Muzaki is preparing his CV to apply for a job as a Graphic Design Editor. Which of the following should NOT be included in his CV?',
+  options: [
+    'Personal information: Muzaki Setiawan, born October 29, 2007, Jl. Sariwangi, Bandung, 081572772698',
+    'Education: SMKS Insan Mandiri, Teknik Jaringan Komputer dan Telekomunikasi',
+    'His favorite anime shows and gaming scores that are unrelated to the job',
+    'Internship experience: BPMJP Kementerian Perdagangan — Graphic Design Editor'
+  ],
+  answer: 2,
+  explanation: `<strong>Isi CV (No. Soal Ujian: 12, 22)</strong><br><br>
+<strong>CV (Curriculum Vitae)</strong> adalah dokumen ringkas yang berisi latar belakang seseorang untuk melamar pekerjaan.<br><br>
+<strong>Contoh CV Muzaki Setiawan:</strong><br>
+✅ Name: Muzaki Setiawan<br>
+✅ Date of Birth: October 29, 2007, Bandung<br>
+✅ Address: Jl. Sariwangi, Bandung<br>
+✅ Phone: 081572772698<br>
+✅ Education: SMKS Insan Mandiri — Teknik Jaringan Komputer dan Telekomunikasi<br>
+✅ Internship: BPMJP Kementerian Perdagangan — Graphic Design Editor<br>
+✅ Skills: Graphic Design, Network Technology<br><br>
+❌ "Anime favorit dan gaming scores" → tidak relevan dan tidak perlu dicantumkan.<br><br>
+<div class="vocab">
+<span class="vocab-item">Curriculum Vitae = riwayat hidup</span>
+<span class="vocab-item">Objective = tujuan melamar</span>
+<span class="vocab-item">References = referensi</span>
+<span class="vocab-item">Skills = keahlian</span>
+</div>`
+},
+{
+  id: 20, topic: 'cv', type: 'Menjodohkan',
+  examNums: [32, 38],
+  topicLabel: 'CV — Komponen',
+  question: 'Jodohkan bagian CV Muzaki Setiawan dengan isinya yang tepat:',
+  matchPairs: [
+    { left: 'Personal Information', right: 'Muzaki Setiawan, born October 29 2007, Jl. Sariwangi Bandung, 081572772698' },
+    { left: 'Educational Background', right: 'SMKS Insan Mandiri (2022-2025), Major: Teknik Jaringan Komputer dan Telekomunikasi' },
+    { left: 'Internship / Work Experience', right: 'BPMJP Kementerian Perdagangan — Graphic Design Editor' },
+    { left: 'Skills', right: 'Graphic Design, Network Configuration, Computer Technology' },
+  ],
+  explanation: `<strong>Bagian-Bagian CV Muzaki (No. Soal Ujian: 32, 38)</strong><br><br>
+<strong>CV lengkap Muzaki Setiawan:</strong><br><br>
+• <strong>Personal Information</strong>: Muzaki Setiawan, lahir 29 Oktober 2007, Jl. Sariwangi Bandung, HP: 081572772698<br>
+• <strong>Educational Background</strong>: SMKS Insan Mandiri, Jurusan TJKT (Teknik Jaringan Komputer dan Telekomunikasi)<br>
+• <strong>Internship</strong>: BPMJP Kementerian Perdagangan — posisi sebagai Editor Desain Grafis<br>
+• <strong>Skills</strong>: Desain grafis, konfigurasi jaringan, teknologi komputer<br><br>
+💡 Tip: PKL (Praktik Kerja Lapangan) ditulis sebagai "Internship" dalam CV berbahasa Inggris, bukan "work experience" karena masih dalam rangka pendidikan.<br><br>
+<div class="vocab">
+<span class="vocab-item">Internship = PKL / magang</span>
+<span class="vocab-item">Major = jurusan</span>
+<span class="vocab-item">Graphic Design Editor = Editor Desain Grafis</span>
+<span class="vocab-item">Network Configuration = konfigurasi jaringan</span>
+</div>`
+},
+
+// ===== SECTION: JOB APPLICATION LETTER =====
+{
+  id: 21, topic: 'letter', type: 'PG',
+  examNums: [10, 11, 19],
+  topicLabel: 'Job Application Letter — Struktur',
+  question: 'Muzaki (Jl. Sariwangi, Bandung, 081572772698) is writing a job application letter for a Graphic Design Editor position. Which part of the letter states his MAIN PURPOSE for writing?',
+  options: [
+    'Closing paragraph',
+    'Introduction paragraph',
+    'Sender\'s address: Jl. Sariwangi, Bandung',
+    'Date of the letter'
+  ],
+  answer: 1,
+  explanation: `<strong>Struktur Job Application Letter Muzaki (No. Soal Ujian: 10, 11, 19)</strong><br><br>
+Surat lamaran kerja Muzaki Setiawan memiliki struktur:<br><br>
+1. <strong>Sender's Address</strong> → Jl. Sariwangi, Bandung<br>
+2. <strong>Date</strong> → Tanggal surat ditulis<br>
+3. <strong>Recipient's Address</strong> → Alamat HRD perusahaan tujuan<br>
+4. <strong>Salutation</strong> → Dear Sir/Madam,<br>
+5. <strong>Introduction (Opening)</strong> → "I am writing to apply for the position of Graphic Design Editor..." ← TUJUAN UTAMA<br>
+6. <strong>Body</strong> → SMKS Insan Mandiri, TJKT, PKL di BPMJP Kemendag sebagai Editor Desain Grafis<br>
+7. <strong>Closing</strong> → Harapan interview + terima kasih<br>
+8. <strong>Signature</strong> → Muzaki Setiawan | 081572772698<br><br>
+<strong>Contoh Opening Muzaki:</strong><br>
+"I am writing to apply for the position of Graphic Design Editor as advertised on your company's website."<br><br>
+<div class="vocab">
+<span class="vocab-item">I am writing to apply for</span>
+<span class="vocab-item">as advertised in/on = seperti yang diiklankan</span>
+<span class="vocab-item">I would like to be considered for</span>
+</div>`
+},
+{
+  id: 22, topic: 'letter', type: 'PG',
+  examNums: [10, 11, 19],
+  topicLabel: 'Job Application Letter — Bagian',
+  question: 'Read this paragraph: "I am a fresh graduate from SMKS Insan Mandiri Bandung, majoring in Teknik Jaringan Komputer dan Telekomunikasi. During my internship at BBPPMPV BMTI, I gained hands-on experience in server configuration and network management." Which part of a job application letter is this?',
+  options: [
+    'Opening / Introduction',
+    'Body paragraph',
+    'Closing paragraph',
+    'Salutation'
+  ],
+  answer: 1,
+  explanation: `<strong>Body Paragraph dalam Surat Lamaran (No. Soal Ujian: 10, 11, 19)</strong><br><br>
+Paragraf ini adalah milik <strong>Ayu Wina Widiana</strong> yang menceritakan pendidikan dan pengalaman PKL-nya di <strong>BBPPMPV BMTI</strong>.<br><br>
+Paragraf yang menjelaskan <strong>kualifikasi, pendidikan, dan keahlian</strong> pelamar adalah bagian <strong>Body</strong> dari surat lamaran.<br><br>
+<strong>Isi tiap bagian:</strong><br>
+• <strong>Opening</strong>: "I am writing to apply for the position of IT Support at your company..."<br>
+• <strong>Body</strong>: "I am a graduate of SMKS Insan Mandiri. During my internship at BBPPMPV BMTI, I configured servers and managed network infrastructure..."<br>
+• <strong>Closing</strong>: "I look forward to hearing from you. Thank you for your consideration."<br><br>
+<div class="vocab">
+<span class="vocab-item">fresh graduate = lulusan baru</span>
+<span class="vocab-item">majoring in = dengan jurusan</span>
+<span class="vocab-item">server configuration = konfigurasi server</span>
+<span class="vocab-item">hands-on experience = pengalaman langsung</span>
+<span class="vocab-item">network management = manajemen jaringan</span>
+</div>`
+},
+{
+  id: 23, topic: 'letter', type: 'PG',
+  examNums: [10, 11],
+  topicLabel: 'Job Application Letter — Closing',
+  question: 'Muzaki is ending his job application letter to a tech company. Which closing sentence is the BEST?',
+  options: [
+    'I am a hardworking person and I want the job so much.',
+    'I hope you will accept my application. Thank you for your time and consideration. I look forward to hearing from you.',
+    'Please call me at 081572772698. I need this job urgently.',
+    'I will be very sad if you don\'t accept me.'
+  ],
+  answer: 1,
+  explanation: `<strong>Closing Surat Lamaran Muzaki (No. Soal Ujian: 10, 11)</strong><br><br>
+<strong>Closing yang baik</strong> harus:<br>
+✅ Formal dan sopan<br>
+✅ Menyampaikan harapan untuk dihubungi<br>
+✅ Mengucapkan terima kasih<br>
+✅ Menunjukkan antusiasme profesional<br><br>
+❌ "I want the job so much" → terlalu kasual, tidak profesional<br>
+❌ "Please call me urgently" → terdengar memaksa, tidak sopan<br>
+❌ "I will be very sad" → tidak profesional sama sekali<br><br>
+<strong>Contoh penutup surat lamaran Muzaki yang baik:</strong><br>
+"I hope you will consider my application. With my experience as a Graphic Design Editor at BPMJP Kementerian Perdagangan, I am confident I can contribute to your company. I look forward to the opportunity of an interview. Thank you for your time and consideration.<br>Sincerely,<br>Muzaki Setiawan"<br><br>
+<div class="vocab">
+<span class="vocab-item">I look forward to = saya berharap</span>
+<span class="vocab-item">I am confident I can = saya yakin bisa</span>
+<span class="vocab-item">Thank you for your consideration</span>
+<span class="vocab-item">Sincerely yours / Yours faithfully</span>
+</div>`
+},
+
+];
+
+// ======================= STATE =======================
+let answered = {};
+let score = 0;
+let currentFilter = 'all';
+
+// ======================= RENDER =======================
+function renderAll() {
+  const area = document.getElementById('questionsArea');
+  area.innerHTML = '';
+
+  const topics = {
+    intro: { label: 'Introducing Oneself & Others', icon: '👋' },
+    greet: { label: 'Greetings & Leave-Taking', icon: '🤝' },
+    procedure: { label: 'Procedure Text', icon: '📋' },
+    narrative: { label: 'Narrative Text', icon: '📖' },
+    hortatory: { label: 'Hortatory Exposition', icon: '📢' },
+    cv: { label: 'Curriculum Vitae (CV)', icon: '📄' },
+    letter: { label: 'Job Application Letter', icon: '✉️' },
+  };
+
+  const topicsOrder = ['intro', 'greet', 'procedure', 'narrative', 'hortatory', 'cv', 'letter'];
+  let totalVisible = 0;
+
+  topicsOrder.forEach(topic => {
+    const qs = questions.filter(q => q.topic === topic && (currentFilter === 'all' || currentFilter === topic));
+    if (qs.length === 0) return;
+    totalVisible += qs.length;
+
+    const t = topics[topic];
+    area.innerHTML += `
+      <div class="section-head">
+        <div class="section-icon">${t.icon}</div>
+        <h2>${t.label}</h2>
+        <span>${qs.length} soal</span>
+      </div>
+    `;
+
+    qs.forEach(q => {
+      area.innerHTML += buildCard(q);
+    });
+  });
+
+  document.getElementById('totalCount').textContent = totalVisible;
+  updateProgress();
+}
+
+function buildCard(q) {
+  const examBadges = q.examNums.map(n => `<span class="q-exam">📝 No.${n}</span>`).join('');
+  const state = answered[q.id] || {};
+
+  let inputHTML = '';
+  if (q.type === 'PG' || q.type === 'PG-Kompleks') {
+    inputHTML = buildPGOptions(q, state);
+  } else if (q.type === 'Menjodohkan') {
+    inputHTML = buildMatching(q, state);
+  } else if (q.type === 'Essay' || q.type === 'Uraian') {
+    inputHTML = `<textarea class="essay-area" id="essay_${q.id}" placeholder="Tulis jawabanmu di sini...">${state.text || ''}</textarea>`;
+  }
+
+  const feedbackHTML = state.checked ? `<div class="feedback ${state.correct ? 'correct' : 'wrong'}">${state.correct ? '✅ Jawaban Benar! +1 poin' : '❌ Jawaban Kurang Tepat. Pelajari penjelasannya!'}</div>` : '';
+  const explanationHTML = `<div class="explanation ${state.showExp ? 'show' : ''}" id="exp_${q.id}">${q.explanation}</div>`;
+
+  const btnCheck = `<button class="btn-check" onclick="checkAnswer(${q.id})">✓ Periksa Jawaban</button>`;
+  const btnShow = `<button class="btn-show" onclick="toggleExp(${q.id})">💡 Tampilkan Jawaban & Penjelasan</button>`;
+  const btnReset = `<button class="btn-reset" onclick="resetQ(${q.id})">↺ Reset</button>`;
+
+  return `
+    <div class="q-card" id="card_${q.id}">
+      <div class="q-meta">
+        <span class="q-num">Soal ${q.id}</span>
+        ${examBadges}
+        <span class="q-topic">${q.topicLabel}</span>
+        <span class="q-type">${q.type}</span>
+      </div>
+      <div class="q-text">${q.question}</div>
+      ${inputHTML}
+      <div class="btn-row" style="margin-top:12px">
+        ${q.type !== 'Essay' && q.type !== 'Uraian' ? btnCheck : ''}
+        ${btnShow}
+        ${btnReset}
+      </div>
+      ${feedbackHTML}
+      ${explanationHTML}
     </div>
+  `;
+}
+
+function buildPGOptions(q, state) {
+  return `<div class="options">
+    ${q.options.map((opt, i) => {
+      let cls = '';
+      if (state.checked) {
+        if (i === q.answer) cls = 'correct disabled';
+        else if (i === state.selected) cls = 'wrong disabled';
+        else cls = 'disabled';
+      } else if (state.selected === i) cls = 'selected';
+      const letter = String.fromCharCode(65 + i);
+      return `<div class="opt ${cls}" onclick="selectOpt(${q.id}, ${i})">
+        <div class="opt-letter">${letter}</div>
+        <div>${opt}</div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+function buildMatching(q, state) {
+  const options = q.matchPairs.map(p => p.right);
+  const shuffled = [...options].sort(() => Math.random() - 0.5);
+  return `<div class="match-container">
+    ${q.matchPairs.map((pair, i) => {
+      const val = state.match ? state.match[i] : '';
+      const cls = state.checked ? (val === pair.right ? 'correct' : 'wrong') : '';
+      return `<div class="match-row">
+        <div class="match-left">${pair.left}</div>
+        <div class="match-right">
+          <select id="match_${q.id}_${i}" class="${cls}" ${state.checked ? 'disabled' : ''}>
+            <option value="">-- Pilih jawaban --</option>
+            ${options.map(o => `<option value="${o}" ${val===o?'selected':''}>${o.substring(0,50)}${o.length>50?'...':''}</option>`).join('')}
+          </select>
+        </div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+// ======================= INTERACTIONS =======================
+function selectOpt(qid, idx) {
+  const q = questions.find(q => q.id === qid);
+  if (!answered[qid]) answered[qid] = {};
+  if (answered[qid].checked) return;
+  answered[qid].selected = idx;
+  const card = document.getElementById(`card_${qid}`);
+  card.querySelectorAll('.opt').forEach((el, i) => {
+    el.className = 'opt' + (i === idx ? ' selected' : '');
+  });
+}
+
+function checkAnswer(qid) {
+  const q = questions.find(q => q.id === qid);
+  if (!answered[qid]) answered[qid] = {};
+  if (answered[qid].checked) return;
+
+  if (q.type === 'PG' || q.type === 'PG-Kompleks') {
+    if (answered[qid].selected === undefined) {
+      alert('Pilih jawaban terlebih dahulu!'); return;
+    }
+    answered[qid].checked = true;
+    const correct = answered[qid].selected === q.answer;
+    answered[qid].correct = correct;
+    if (correct) score++;
+  } else if (q.type === 'Menjodohkan') {
+    const matches = q.matchPairs.map((_, i) => {
+      return document.getElementById(`match_${qid}_${i}`)?.value || '';
+    });
+    answered[qid].match = matches;
+    answered[qid].checked = true;
+    const correct = matches.every((m, i) => m === q.matchPairs[i].right);
+    answered[qid].correct = correct;
+    if (correct) score++;
+  }
+
+  refreshCard(qid);
+  updateProgress();
+}
+
+function toggleExp(qid) {
+  if (!answered[qid]) answered[qid] = {};
+  answered[qid].showExp = !answered[qid].showExp;
+  const el = document.getElementById(`exp_${qid}`);
+  if (el) el.classList.toggle('show');
+}
+
+function resetQ(qid) {
+  delete answered[qid];
+  refreshCard(qid);
+  updateProgress();
+}
+
+function refreshCard(qid) {
+  const q = questions.find(q => q.id === qid);
+  const card = document.getElementById(`card_${qid}`);
+  if (!card) return;
+  const newCard = document.createElement('div');
+  newCard.innerHTML = buildCard(q);
+  card.replaceWith(newCard.firstElementChild);
+}
+
+function updateProgress() {
+  const total = questions.filter(q => currentFilter === 'all' || q.topic === currentFilter).length;
+  const done = Object.keys(answered).filter(id => {
+    const q = questions.find(q => q.id === parseInt(id));
+    return q && answered[id].checked && (currentFilter === 'all' || q.topic === currentFilter);
+  }).length;
+  document.getElementById('doneCount').textContent = done;
+  document.getElementById('totalCount').textContent = total;
+  document.getElementById('progressFill').style.width = total ? `${(done/total)*100}%` : '0%';
+  document.getElementById('scoreVal').textContent = score;
+  recalcScore();
+}
+
+function recalcScore() {
+  score = Object.keys(answered).filter(id => answered[id].correct).length;
+  document.getElementById('scoreVal').textContent = score;
+}
+
+function filterTopic(topic) {
+  currentFilter = topic;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  renderAll();
+}
+
+function restartAll() {
+  answered = {};
+  score = 0;
+  document.getElementById('summaryCard').style.display = 'none';
+  renderAll();
+}
+
+// ======================= OCEAN EFFECTS =======================
+function createOceanFX() {
+  const bg = document.getElementById('oceanBg');
+
+  // Bubbles
+  for (let i = 0; i < 25; i++) {
+    const b = document.createElement('div');
+    b.className = 'bubble';
+    const size = Math.random() * 40 + 10;
+    b.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%;
+      animation-duration:${Math.random()*15+8}s;
+      animation-delay:${Math.random()*15}s;
+    `;
+    bg.appendChild(b);
+  }
+
+  // Wave lines
+  for (let i = 0; i < 5; i++) {
+    const w = document.createElement('div');
+    w.className = 'wave-line';
+    w.style.cssText = `
+      top:${20+i*15}%;
+      animation-duration:${8+i*3}s;
+      animation-delay:${i*1.5}s;
+      opacity:${0.3-i*0.04};
+    `;
+    bg.appendChild(w);
+  }
+
+  // Fish 🐠
+  const fishEmojis = ['🐠','🐟','🐡','🦈','🐙'];
+  fishEmojis.forEach((f, i) => {
+    const fish = document.createElement('div');
+    fish.className = 'fish';
+    fish.textContent = f;
+    fish.style.cssText = `
+      top:${10+i*17}%;
+      animation-duration:${20+i*8}s;
+      animation-delay:${i*4}s;
+      opacity:0.25;
+    `;
+    bg.appendChild(fish);
+  });
+}
+
+// ======================= INIT =======================
+createOceanFX();
+renderAll();
+</script>
 </body>
 </html>
